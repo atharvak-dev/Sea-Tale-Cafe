@@ -38,7 +38,7 @@ const convertToWords = (amount: number): string => {
     return result
   }
 
-  const integerPart = Math.floor(amount)
+  let integerPart = Math.floor(amount)
   let result = ''
   let thousandIndex = 0
 

@@ -20,6 +20,7 @@ export default function AdminPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [events, setEvents] = useState<Event[]>([])
   const [restaurantPhone, setRestaurantPhone] = useState('')
+  const [gstin, setGstin] = useState('')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function AdminPage() {
   }, [])
 
   const fetchData = async () => {
-    const [dishesRes, ordersRes, tablesRes, taxesRes, categoriesRes, eventsRes, configRes, receptionistRes] = await Promise.all([
+    const [dishesRes, ordersRes, tablesRes, taxesRes, categoriesRes, eventsRes, configRes, receptionistRes, gstinRes] = await Promise.all([
       supabase.from('dishes').select('*'),
       supabase.from('orders').select('*').order('created_at', { ascending: false }),
       supabase.from('tables').select('*'),
@@ -52,7 +53,8 @@ export default function AdminPage() {
       supabase.from('categories').select('*'),
       supabase.from('events').select('*').order('event_date', { ascending: false }),
       supabase.from('system_config').select('*').eq('key', 'restaurant_phone'),
-      supabase.from('system_config').select('*').eq('key', 'receptionist_phone')
+      supabase.from('system_config').select('*').eq('key', 'receptionist_phone'),
+      supabase.from('system_config').select('*').eq('key', 'gstin')
     ])
     setDishes(dishesRes.data || [])
     setOrders(ordersRes.data || [])
@@ -62,6 +64,7 @@ export default function AdminPage() {
     setEvents(eventsRes.data || [])
     setRestaurantPhone(configRes.data?.[0]?.value || '')
     setCurrentReceptionist(receptionistRes.data?.[0]?.value || '')
+    setGstin(gstinRes.data?.[0]?.value || '')
   }
 
   const addReceptionist = async () => {
@@ -582,32 +585,22 @@ export default function AdminPage() {
               <div className="flex gap-4">
                 <input
                   type="text"
+                  value={gstin}
+                  onChange={(e) => setGstin(e.target.value)}
                   placeholder="Enter GSTIN (e.g., 29ABCDE1234F1Z5)"
                   className="input-modern flex-1"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      const gstin = (e.target as HTMLInputElement).value
-                      if (gstin.trim()) {
-                        supabase.from('system_config')
-                          .upsert({ key: 'gstin', value: gstin.trim() })
-                          .then(() => {
-                            alert('GSTIN updated successfully!')
-                            ;(e.target as HTMLInputElement).value = ''
-                          })
-                      }
-                    }
-                  }}
                 />
                 <button
-                  onClick={() => {
-                    const input = document.querySelector('input[placeholder*="GSTIN"]') as HTMLInputElement
-                    if (input?.value.trim()) {
-                      supabase.from('system_config')
-                        .upsert({ key: 'gstin', value: input.value.trim() })
-                        .then(() => {
-                          alert('GSTIN updated successfully!')
-                          input.value = ''
-                        })
+                  onClick={async () => {
+                    if (gstin.trim()) {
+                      const { error } = await supabase.from('system_config')
+                        .upsert({ key: 'gstin', value: gstin.trim() })
+                      if (!error) {
+                        alert('GSTIN updated successfully!')
+                        fetchData()
+                      } else {
+                        alert('Failed to update GSTIN')
+                      }
                     }
                   }}
                   className="btn-primary"
@@ -616,7 +609,7 @@ export default function AdminPage() {
                 </button>
               </div>
               <p className="text-sm text-gray-600 mt-2">
-                This GSTIN will appear on all generated GST invoices for compliance
+                Current GSTIN: {gstin || 'Not set'}
               </p>
             </div>
 

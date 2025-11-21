@@ -19,6 +19,7 @@ export default function ReceptionistPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [activeTab, setActiveTab] = useState<'orders' | 'dishes' | 'categories' | 'events' | 'tables' | 'settings' | 'admin'>('orders')
   const [restaurantPhone, setRestaurantPhone] = useState('')
+  const [gstin, setGstin] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
   const [currentReceptionist, setCurrentReceptionist] = useState('')
 
@@ -40,7 +41,7 @@ export default function ReceptionistPage() {
   }, [router])
 
   const fetchData = async () => {
-    const [dishesRes, ordersRes, tablesRes, taxesRes, categoriesRes, eventsRes, configRes, receptionistRes] = await Promise.all([
+    const [dishesRes, ordersRes, tablesRes, taxesRes, categoriesRes, eventsRes, configRes, receptionistRes, gstinRes] = await Promise.all([
       supabase.from('dishes').select('*'),
       supabase.from('orders').select('*').order('created_at', { ascending: false }),
       supabase.from('tables').select('*'),
@@ -48,7 +49,8 @@ export default function ReceptionistPage() {
       supabase.from('categories').select('*'),
       supabase.from('events').select('*').order('event_date', { ascending: false }),
       supabase.from('system_config').select('*').eq('key', 'restaurant_phone'),
-      supabase.from('system_config').select('*').eq('key', 'receptionist_phone')
+      supabase.from('system_config').select('*').eq('key', 'receptionist_phone'),
+      supabase.from('system_config').select('*').eq('key', 'gstin')
     ])
     setDishes(dishesRes.data || [])
     setOrders(ordersRes.data || [])
@@ -58,6 +60,7 @@ export default function ReceptionistPage() {
     setEvents(eventsRes.data || [])
     setRestaurantPhone(configRes.data?.[0]?.value || '')
     setCurrentReceptionist(receptionistRes.data?.[0]?.value || '')
+    setGstin(gstinRes.data?.[0]?.value || '')
   }
 
   const addDish = async (dish: Omit<Dish, 'id' | 'created_at'>) => {
@@ -418,32 +421,22 @@ export default function ReceptionistPage() {
               <div className="flex gap-4">
                 <input
                   type="text"
+                  value={gstin}
+                  onChange={(e) => setGstin(e.target.value)}
                   placeholder="Enter GSTIN (e.g., 29ABCDE1234F1Z5)"
                   className="p-3 border rounded-lg flex-1"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      const gstin = (e.target as HTMLInputElement).value
-                      if (gstin.trim()) {
-                        supabase.from('system_config')
-                          .upsert({ key: 'gstin', value: gstin.trim() })
-                          .then(() => {
-                            alert('GSTIN updated successfully!')
-                            ;(e.target as HTMLInputElement).value = ''
-                          })
-                      }
-                    }
-                  }}
                 />
                 <button
-                  onClick={() => {
-                    const input = document.querySelector('input[placeholder*="GSTIN"]') as HTMLInputElement
-                    if (input?.value.trim()) {
-                      supabase.from('system_config')
-                        .upsert({ key: 'gstin', value: input.value.trim() })
-                        .then(() => {
-                          alert('GSTIN updated successfully!')
-                          input.value = ''
-                        })
+                  onClick={async () => {
+                    if (gstin.trim()) {
+                      const { error } = await supabase.from('system_config')
+                        .upsert({ key: 'gstin', value: gstin.trim() })
+                      if (!error) {
+                        alert('GSTIN updated successfully!')
+                        fetchData()
+                      } else {
+                        alert('Failed to update GSTIN')
+                      }
                     }
                   }}
                   className="bg-ocean-600 text-white px-4 py-2 rounded-lg"
@@ -452,7 +445,7 @@ export default function ReceptionistPage() {
                 </button>
               </div>
               <p className="text-sm text-gray-600 mt-2">
-                This GSTIN will appear on all generated invoices for GST compliance
+                Current GSTIN: {gstin || 'Not set'} - This appears on all GST invoices
               </p>
             </div>
           </div>
