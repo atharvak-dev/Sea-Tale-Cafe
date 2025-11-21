@@ -32,7 +32,7 @@ export default function DishesTab({
   const [showAddCategory, setShowAddCategory] = useState(false)
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
   const [newCategory, setNewCategory] = useState<Omit<Category, 'id' | 'created_at'>>({
-    name: '', description: '', is_veg: false, cuisine_type: 'general'
+    name: '', description: '', cuisine_type: 'general'
   })
 
   const quickTags = ['Best Seller', 'Chef Recommended', 'New', 'Popular', 'Signature']
@@ -223,8 +223,8 @@ export default function DishesTab({
                     onClick={() => addQuickTag(tag)}
                     disabled={newDish.tags.includes(tag)}
                     className={`px-3 py-1 rounded-full text-xs transition-colors ${newDish.tags.includes(tag)
-                        ? 'bg-green-100 text-green-700 cursor-not-allowed'
-                        : 'bg-gray-100 text-gray-700 hover:bg-ocean-100 hover:text-ocean-700'
+                      ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                      : 'bg-gray-100 text-gray-700 hover:bg-ocean-100 hover:text-ocean-700'
                       }`}
                   >
                     + {tag}
@@ -299,15 +299,6 @@ export default function DishesTab({
                     </option>
                   ))}
                 </select>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={newCategory.is_veg}
-                    onChange={(e) => setNewCategory({ ...newCategory, is_veg: e.target.checked })}
-                    className="rounded"
-                  />
-                  <span className="text-sm font-medium">🥬 Vegetarian Category</span>
-                </label>
                 <div className="flex gap-3">
                   <button
                     onClick={() => {

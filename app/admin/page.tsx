@@ -103,50 +103,50 @@ export default function AdminPage() {
 
   const addDish = async (dish: Omit<Dish, 'id' | 'created_at'>) => {
     const { error } = await supabase.from('dishes').insert(dish)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const updateDishTags = async (dishId: string, tags: string[]) => {
     const { error } = await supabase.from('dishes').update({ tags }).eq('id', dishId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const deleteDish = async (dishId: string, dishName: string) => {
     if (!confirm(`Delete "${dishName}"?`)) return
     const { error } = await supabase.from('dishes').delete().eq('id', dishId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const addCategory = async (category: Omit<Category, 'id' | 'created_at'>) => {
     const { error } = await supabase.from('categories').insert(category)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const deleteCategory = async (categoryId: string, categoryName: string) => {
     if (!confirm(`Delete "${categoryName}"?`)) return
     const { error } = await supabase.from('categories').delete().eq('id', categoryId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const updateCategory = async (categoryId: string, category: Omit<Category, 'id' | 'created_at'>) => {
     const { error } = await supabase.from('categories').update(category).eq('id', categoryId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const addEvent = async (event: Omit<Event, 'id' | 'created_at'>) => {
     const { error } = await supabase.from('events').insert(event)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const toggleEvent = async (eventId: string, isActive: boolean) => {
     const { error } = await supabase.from('events').update({ is_active: isActive }).eq('id', eventId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const deleteEvent = async (eventId: string, eventTitle: string) => {
     if (!confirm(`Delete "${eventTitle}"?`)) return
     const { error } = await supabase.from('events').delete().eq('id', eventId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const removeDishFromOrder = async (orderId: string, dishIndex: number) => {
@@ -164,7 +164,7 @@ export default function AdminPage() {
       .update({ items: updatedItems, total_amount: newTotal })
       .eq('id', orderId)
 
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const approveTableOrders = async (tableId: string, tableOrderList: Order[], totalAmount: number, taxAmount: number, finalAmount: number) => {
@@ -182,20 +182,20 @@ export default function AdminPage() {
     if (!error) {
       const table = tables.find(t => t.id === tableId)
       alert(`Combined bill approved for Table ${table?.number}!\nTotal: $${finalAmount.toFixed(2)}\nCustomer's bill will be automatically downloaded.`)
-      fetchAllData()
+      fetchData()
     }
   }
 
   const updateTax = async (taxId: string, percentage: number) => {
     const { error } = await supabase.from('tax_config').update({ percentage }).eq('id', taxId)
-    if (!error) fetchAllData()
+    if (!error) fetchData()
   }
 
   const updateRestaurantPhone = async (phone: string) => {
     const { error } = await supabase.from('system_config').update({ value: phone }).eq('key', 'restaurant_phone')
     if (!error) {
       setRestaurantPhone(phone)
-      fetchAllData()
+      fetchData()
     }
   }
 
@@ -225,7 +225,7 @@ export default function AdminPage() {
         .eq('id', tableData.id)
 
       if (!updateError) {
-        fetchAllData()
+        fetchData()
         alert(`Table ${tableNumber} created successfully!`)
       }
     } catch (err) {
@@ -471,7 +471,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => {
                       if (confirm(`Delete Table ${table.number}?`)) {
-                        supabase.from('tables').delete().eq('id', table.id).then(() => fetchAllData())
+                        supabase.from('tables').delete().eq('id', table.id).then(() => fetchData())
                       }
                     }}
                     className="mt-3 text-xs bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition-colors"

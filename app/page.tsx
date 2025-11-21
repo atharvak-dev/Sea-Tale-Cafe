@@ -97,18 +97,13 @@ export default function Home() {
                       {category.cuisine_type === 'italian' && '🍝'}
                       {category.cuisine_type === 'drinks' && '🥤'}
                       {category.cuisine_type === 'desserts' && '🍰'}
-                      {category.cuisine_type === 'general' && (category.is_veg ? '🥬' : '🍖')}
+                      {category.cuisine_type === 'general' && '🍽️'}
                       {!['chinese', 'desi', 'italian', 'drinks', 'desserts', 'general'].includes(category.cuisine_type) && '🍽️'}
                     </div>
                     <h3 className="font-display font-bold text-lg text-gray-800 mb-2 group-hover:text-ocean-700 transition-colors">
                       {category.name}
                     </h3>
                     <p className="text-sm text-gray-600">{category.description}</p>
-                    {category.is_veg && (
-                      <span className="inline-block mt-2 bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-                        🥬 Vegetarian
-                      </span>
-                    )}
                   </div>
                 </Link>
               ))}

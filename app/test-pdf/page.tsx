@@ -7,7 +7,7 @@ export default function TestPDFPage() {
 
   const generateTestBill = () => {
     setLoading(true)
-    
+
     // Mock data for testing
     const testBillData: BillData = {
       order: {
@@ -49,6 +49,7 @@ export default function TestPDFPage() {
           price: 24.99,
           image_url: '',
           is_spicy: false,
+          is_veg: false,
           tags: ['Best Seller'],
           created_at: new Date().toISOString()
         },
@@ -59,6 +60,7 @@ export default function TestPDFPage() {
           price: 12.50,
           image_url: '',
           is_spicy: false,
+          is_veg: true,
           tags: ['Vegetarian'],
           created_at: new Date().toISOString()
         },
@@ -69,6 +71,7 @@ export default function TestPDFPage() {
           price: 18.75,
           image_url: '',
           is_spicy: false,
+          is_veg: false,
           tags: [],
           created_at: new Date().toISOString()
         }
@@ -114,7 +117,7 @@ export default function TestPDFPage() {
           <h1 className="text-3xl font-display font-bold text-gray-800 mb-6 text-center">
             🧾 PDF Bill Generator Test
           </h1>
-          
+
           <div className="space-y-6">
             <div className="bg-blue-50 p-4 rounded-lg">
               <h2 className="font-semibold text-blue-800 mb-2">Test Bill Details:</h2>
