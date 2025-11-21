@@ -20,6 +20,7 @@ export default function AdminPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [events, setEvents] = useState<Event[]>([])
   const [restaurantPhone, setRestaurantPhone] = useState('')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     // Check admin authentication
@@ -36,6 +37,10 @@ export default function AdminPage() {
     }
 
     fetchData()
+  }, [])
+
+  useEffect(() => {
+    setMounted(true)
   }, [])
 
   const fetchData = async () => {
@@ -284,7 +289,9 @@ export default function AdminPage() {
             {/* Dashboard Header */}
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-atlassian-neutral-800">Dashboard</h2>
-              <span className="text-sm text-atlassian-neutral-500">{new Date().toLocaleDateString()}</span>
+              <span className="text-sm text-atlassian-neutral-500">
+                {mounted ? new Date().toLocaleDateString() : ''}
+              </span>
             </div>
 
             {/* Summary Cards */}
