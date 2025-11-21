@@ -29,12 +29,12 @@ export default function ReceptionistPage() {
       router.push('/receptionist/login')
       return
     }
-    
+
     if (role !== 'admin' && role !== 'receptionist') {
       router.push('/receptionist/login')
       return
     }
-    
+
     setIsAdmin(role === 'admin')
     fetchData()
   }, [router])
@@ -122,7 +122,7 @@ export default function ReceptionistPage() {
       .from('orders')
       .update({ items: updatedItems, total_amount: newTotal })
       .eq('id', orderId)
-    
+
     if (!error) fetchData()
   }
 
@@ -130,17 +130,17 @@ export default function ReceptionistPage() {
     const orderIds = tableOrderList.map(order => order.id)
     const { error } = await supabase
       .from('orders')
-      .update({ 
-        status: 'approved', 
+      .update({
+        status: 'approved',
         bill_amount: totalAmount,
         tax_amount: taxAmount,
         final_amount: finalAmount
       })
       .in('id', orderIds)
-    
+
     if (!error) {
       const table = tables.find(t => t.id === tableId)
-      alert(`Combined bill approved for Table ${table?.number}!\nTotal: $${finalAmount.toFixed(2)}`)
+      alert(`Combined bill approved for Table ${table?.number}!\nTotal: ₹${finalAmount.toFixed(2)}`)
       fetchData()
     }
   }
@@ -154,21 +154,21 @@ export default function ReceptionistPage() {
         .insert({ number: tableNumber.trim() })
         .select()
         .single()
-      
+
       if (insertError) throw insertError
-      
+
       const qrData = `${window.location.origin}/customer?table=${tableData.id}`
       const qrCode = await QRCode.toDataURL(qrData, {
         width: 200,
         margin: 2,
         color: { dark: '#0369a1', light: '#ffffff' }
       })
-      
+
       const { error: updateError } = await supabase
         .from('tables')
         .update({ qr_code: qrCode })
         .eq('id', tableData.id)
-      
+
       if (!updateError) {
         fetchData()
         alert(`Table ${tableNumber} created successfully!`)
@@ -328,9 +328,9 @@ export default function ReceptionistPage() {
                   <h3 className="font-display font-bold text-xl text-ocean-900 mb-4">Table {table.number}</h3>
                   {table.qr_code ? (
                     <div className="mb-4">
-                      <img 
-                        src={table.qr_code} 
-                        alt={`QR Code for Table ${table.number}`} 
+                      <img
+                        src={table.qr_code}
+                        alt={`QR Code for Table ${table.number}`}
                         className="mx-auto border-2 border-ocean-200 rounded-lg shadow-md"
                         width={160}
                         height={160}
@@ -402,7 +402,7 @@ export default function ReceptionistPage() {
           <div className="space-y-6">
             <div className="maritime-card p-6">
               <h2 className="text-2xl font-display font-bold text-gray-800 mb-6">Admin Panel</h2>
-              
+
               <div className="bg-blue-50 p-4 rounded-xl mb-6">
                 <h3 className="font-bold text-blue-800 mb-2">Current Receptionist</h3>
                 <p className="text-blue-700">
@@ -422,7 +422,7 @@ export default function ReceptionistPage() {
                         const phone = (e.target as HTMLInputElement).value
                         if (phone) {
                           updateReceptionist(phone)
-                          ;(e.target as HTMLInputElement).value = ''
+                            ; (e.target as HTMLInputElement).value = ''
                         }
                       }
                     }}

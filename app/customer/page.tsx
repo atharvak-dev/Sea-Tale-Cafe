@@ -234,7 +234,7 @@ export default function CustomerPage() {
                     <div>
                       <div className="flex justify-between items-start">
                         <h3 className="font-bold text-atlassian-neutral-800">{dish.name}</h3>
-                        <span className="font-bold text-atlassian-blue-700">${dish.price}</span>
+                        <span className="font-bold text-atlassian-blue-700">₹{dish.price}</span>
                       </div>
                       <p className="text-xs text-atlassian-neutral-500 line-clamp-2 mt-1">{dish.description}</p>
                     </div>
@@ -281,7 +281,7 @@ export default function CustomerPage() {
                           <p className="text-xs text-atlassian-neutral-500">x{item.quantity}</p>
                         </div>
                       </div>
-                      <p className="font-bold text-atlassian-blue-700">${(item.dish.price * item.quantity).toFixed(2)}</p>
+                      <p className="font-bold text-atlassian-blue-700">₹{(item.dish.price * item.quantity).toFixed(2)}</p>
                     </div>
                   ))}
                 </div>
@@ -290,7 +290,7 @@ export default function CustomerPage() {
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-atlassian-neutral-600">Total Amount</span>
                     <span className="text-2xl font-bold text-atlassian-blue-700">
-                      ${cart.reduce((sum, item) => sum + (item.dish.price * item.quantity), 0).toFixed(2)}
+                      ₹{cart.reduce((sum, item) => sum + (item.dish.price * item.quantity), 0).toFixed(2)}
                     </span>
                   </div>
 
@@ -336,7 +336,7 @@ export default function CustomerPage() {
                       </p>
                     </div>
                     <p className="font-bold text-xl text-atlassian-blue-700">
-                      ${(order.final_amount || order.total_amount).toFixed(2)}
+                      ₹{(order.final_amount || order.total_amount).toFixed(2)}
                     </p>
                   </div>
 
@@ -344,7 +344,7 @@ export default function CustomerPage() {
                     {order.items.map((item: any, idx: number) => (
                       <div key={idx} className="flex justify-between text-sm text-atlassian-neutral-600">
                         <span>{item.quantity}x {item.dish_name}</span>
-                        <span>${((item.dish_price || 0) * item.quantity).toFixed(2)}</span>
+                        <span>₹{((item.dish_price || 0) * item.quantity).toFixed(2)}</span>
                       </div>
                     ))}
                   </div>

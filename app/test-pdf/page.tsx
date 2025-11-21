@@ -125,9 +125,9 @@ export default function TestPDFPage() {
                 <li>• Table: T5</li>
                 <li>• Customer: +1234567890</li>
                 <li>• Items: Grilled Salmon (x2), Caesar Salad (x1), Fish & Chips (x3)</li>
-                <li>• Subtotal: $118.73</li>
-                <li>• Tax (CGST + SGST): $21.37</li>
-                <li>• Total: $140.10</li>
+                <li>• Subtotal: ₹118.73</li>
+                <li>• Tax (CGST + SGST): ₹21.37</li>
+                <li>• Total: ₹140.10</li>
               </ul>
             </div>
 

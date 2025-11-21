@@ -398,7 +398,7 @@ export default function DishesTab({
                 <div className="p-4">
                   <h3 className="font-display font-bold text-lg text-gray-800 mb-2">{dish.name}</h3>
                   <p className="text-gray-600 text-sm mb-3 line-clamp-2">{dish.description}</p>
-                  <p className="text-2xl font-bold text-ocean-700 mb-3">${dish.price}</p>
+                  <p className="text-2xl font-bold text-ocean-700 mb-3">₹{dish.price}</p>
 
                   {category && (
                     <span className="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs mb-2">

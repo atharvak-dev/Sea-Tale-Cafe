@@ -18,7 +18,7 @@ export default function DishCard({ dish, onAddToCart }: DishCardProps) {
           className="object-cover group-hover:scale-110 transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-        
+
         {/* Tags */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
           {dish.tags.map(tag => (
@@ -33,13 +33,13 @@ export default function DishCard({ dish, onAddToCart }: DishCardProps) {
           )}
         </div>
       </div>
-      
+
       <div className="p-5">
         <h3 className="font-display font-bold text-gray-800 mb-2 text-lg">{dish.name}</h3>
         <p className="text-gray-600 text-sm mb-4 line-clamp-2">{dish.description}</p>
         <div className="flex justify-between items-center">
           <span className="text-2xl font-bold bg-gradient-to-r from-ocean-600 to-ocean-700 bg-clip-text text-transparent">
-            ${dish.price}
+            ₹{dish.price}
           </span>
           {onAddToCart && (
             <button

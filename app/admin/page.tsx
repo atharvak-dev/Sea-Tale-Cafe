@@ -216,7 +216,7 @@ export default function AdminPage() {
 
     if (!error) {
       const table = tables.find(t => t.id === tableId)
-      alert(`Combined bill approved for Table ${table?.number}!\nTotal: $${finalAmount.toFixed(2)}\nCustomer's bill will be automatically downloaded.`)
+      alert(`Combined bill approved for Table ${table?.number}!\nTotal: ₹${finalAmount.toFixed(2)}\nCustomer's bill will be automatically downloaded.`)
       fetchData()
     }
   }
@@ -356,7 +356,7 @@ export default function AdminPage() {
                 <h3 className="text-sm font-semibold text-atlassian-neutral-500 uppercase tracking-wider">Today's Sales</h3>
                 <div className="mt-2 flex items-baseline gap-2">
                   <span className="text-4xl font-bold text-atlassian-neutral-800">
-                    ${orders
+                    ₹{orders
                       .filter(o => o.status === 'approved' && new Date(o.created_at).toDateString() === new Date().toDateString())
                       .reduce((sum, o) => sum + (o.final_amount || 0), 0)
                       .toFixed(0)}
@@ -407,7 +407,7 @@ export default function AdminPage() {
                         </span>
                       </div>
                       <p className="text-sm text-atlassian-neutral-600 truncate">
-                        {order.items.length} items • ${order.total_amount.toFixed(2)}
+                        {order.items.length} items • ₹{order.total_amount.toFixed(2)}
                       </p>
                     </div>
                   </div>

@@ -10,13 +10,13 @@ interface OrdersTabProps {
   onRemoveDishFromOrder: (orderId: string, dishIndex: number) => void
 }
 
-export default function OrdersTab({ 
-  orders, 
-  tables, 
-  dishes, 
-  taxes, 
-  onApproveTableOrders, 
-  onRemoveDishFromOrder 
+export default function OrdersTab({
+  orders,
+  tables,
+  dishes,
+  taxes,
+  onApproveTableOrders,
+  onRemoveDishFromOrder
 }: OrdersTabProps) {
   const calculateTaxAndTotal = (baseAmount: number) => {
     const taxAmount = taxes.reduce((sum, tax) => sum + (baseAmount * tax.percentage / 100), 0)
@@ -51,7 +51,7 @@ export default function OrdersTab({
                 <p className="text-sm text-gray-500">{tableOrderList.length} order(s)</p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-ocean-700">${finalAmount.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-ocean-700">₹{finalAmount.toFixed(2)}</p>
                 <p className="text-sm text-gray-500">Total with tax</p>
               </div>
             </div>
@@ -65,14 +65,14 @@ export default function OrdersTab({
                       {new Date(order.created_at).toLocaleTimeString()}
                     </span>
                   </div>
-                  
+
                   <div className="space-y-2">
                     {order.items.map((item: any, itemIndex: number) => {
                       const dish = dishes.find(d => d.id === item.dish_id)
                       return (
                         <div key={itemIndex} className="flex justify-between items-center">
                           <span className="text-sm">
-                            {dish?.name} x{item.quantity} - ${((dish?.price || 0) * item.quantity).toFixed(2)}
+                            {dish?.name} x{item.quantity} - ₹{((dish?.price || 0) * item.quantity).toFixed(2)}
                           </span>
                           <button
                             onClick={() => onRemoveDishFromOrder(order.id, itemIndex)}
@@ -93,17 +93,17 @@ export default function OrdersTab({
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>${totalAmount.toFixed(2)}</span>
+                  <span>₹{totalAmount.toFixed(2)}</span>
                 </div>
                 {taxes.map(tax => (
                   <div key={tax.id} className="flex justify-between text-sm text-gray-600">
                     <span>{tax.name} ({tax.percentage}%):</span>
-                    <span>${((totalAmount * tax.percentage) / 100).toFixed(2)}</span>
+                    <span>₹{((totalAmount * tax.percentage) / 100).toFixed(2)}</span>
                   </div>
                 ))}
                 <div className="flex justify-between font-bold text-lg border-t pt-2">
                   <span>Final Total:</span>
-                  <span className="text-ocean-700">${finalAmount.toFixed(2)}</span>
+                  <span className="text-ocean-700">₹{finalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -112,7 +112,7 @@ export default function OrdersTab({
               onClick={() => onApproveTableOrders(tableId, tableOrderList, totalAmount, taxAmount, finalAmount)}
               className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-medium"
             >
-              💳 Approve & Send Combined Bill (${finalAmount.toFixed(2)})
+              💳 Approve & Send Combined Bill (₹{finalAmount.toFixed(2)})
             </button>
           </div>
         )
