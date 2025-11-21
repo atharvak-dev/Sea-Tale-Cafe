@@ -22,6 +22,31 @@ module.exports = {
           500: '#f43f5e',
           600: '#e11d48',
           700: '#be185d',
+        },
+        atlassian: {
+          blue: {
+            50: '#E9F2FF',
+            100: '#CCE0FF',
+            400: '#579DFF',
+            500: '#0052CC',
+            600: '#0045B0',
+            700: '#091E42',
+          },
+          neutral: {
+            100: '#FAFBFC',
+            200: '#F4F5F7',
+            300: '#EBECF0',
+            400: '#DFE1E6',
+            500: '#C1C7D0',
+            800: '#172B4D',
+          },
+          green: '#00875A',
+          yellow: '#FFAB00',
+          red: '#DE350B',
+        },
+        sea: {
+          gold: '#D4AF37',
+          cream: '#FDFBF7',
         }
       },
       fontFamily: {
