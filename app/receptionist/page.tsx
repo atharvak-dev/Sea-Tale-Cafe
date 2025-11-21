@@ -140,8 +140,24 @@ export default function ReceptionistPage() {
 
     if (!error) {
       const table = tables.find(t => t.id === tableId)
-      alert(`Combined bill approved for Table ${table?.number}!\nTotal: ₹${finalAmount.toFixed(2)}`)
+      alert(`Combined bill approved for Table ${table?.number}!\nTotal: ₹${finalAmount.toFixed(2)}\n\nCustomer can now make payment. Mark as paid to generate GST invoice.`)
       fetchData()
+    }
+  }
+
+  const markAsPaid = async (tableId: string, tableOrderList: Order[]) => {
+    const orderIds = tableOrderList.map(order => order.id)
+    const { error } = await supabase
+      .from('orders')
+      .update({ status: 'completed' })
+      .in('id', orderIds)
+
+    if (!error) {
+      const table = tables.find(t => t.id === tableId)
+      alert(`Payment confirmed for Table ${table?.number}!\nGST Invoice has been generated and downloaded.`)
+      fetchData()
+    } else {
+      alert('Failed to mark as paid. Please try again.')
     }
   }
 
@@ -255,6 +271,7 @@ export default function ReceptionistPage() {
             taxes={taxes}
             onApproveTableOrders={approveTableOrders}
             onRemoveDishFromOrder={removeDishFromOrder}
+            onMarkAsPaid={markAsPaid}
           />
         )}
 
@@ -394,6 +411,49 @@ export default function ReceptionistPage() {
                   Update
                 </button>
               </div>
+            </div>
+
+            <div className="maritime-card p-4">
+              <h2 className="text-xl font-bold mb-4">GSTIN Configuration</h2>
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  placeholder="Enter GSTIN (e.g., 29ABCDE1234F1Z5)"
+                  className="p-3 border rounded-lg flex-1"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      const gstin = (e.target as HTMLInputElement).value
+                      if (gstin.trim()) {
+                        supabase.from('system_config')
+                          .upsert({ key: 'gstin', value: gstin.trim() })
+                          .then(() => {
+                            alert('GSTIN updated successfully!')
+                            ;(e.target as HTMLInputElement).value = ''
+                          })
+                      }
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    const input = document.querySelector('input[placeholder*="GSTIN"]') as HTMLInputElement
+                    if (input?.value.trim()) {
+                      supabase.from('system_config')
+                        .upsert({ key: 'gstin', value: input.value.trim() })
+                        .then(() => {
+                          alert('GSTIN updated successfully!')
+                          input.value = ''
+                        })
+                    }
+                  }}
+                  className="bg-ocean-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Update GSTIN
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">
+                This GSTIN will appear on all generated invoices for GST compliance
+              </p>
             </div>
           </div>
         )}

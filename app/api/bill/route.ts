@@ -23,17 +23,19 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch related data
-    const [dishesRes, tableRes, taxesRes, configRes] = await Promise.all([
+    const [dishesRes, tableRes, taxesRes, phoneRes, gstinRes] = await Promise.all([
       supabase.from('dishes').select('*'),
       supabase.from('tables').select('*').eq('id', order.table_id).single(),
       supabase.from('tax_config').select('*').eq('is_active', true),
-      supabase.from('system_config').select('*').eq('key', 'restaurant_phone').single()
+      supabase.from('system_config').select('*').eq('key', 'restaurant_phone').single(),
+      supabase.from('system_config').select('*').eq('key', 'gstin').single()
     ])
 
     const dishes = dishesRes.data || []
     const table = tableRes.data
     const taxes = taxesRes.data || []
-    const restaurantPhone = configRes.data?.value || ''
+    const restaurantPhone = phoneRes.data?.value || ''
+    const gstin = gstinRes.data?.value || '29ABCDE1234F1Z5'
 
     if (!table) {
       return NextResponse.json({ error: 'Table not found' }, { status: 404 })
@@ -45,7 +47,8 @@ export async function GET(request: NextRequest) {
       dishes,
       table,
       taxes,
-      restaurantPhone
+      restaurantPhone,
+      gstin
     })
 
     // Convert PDF to buffer

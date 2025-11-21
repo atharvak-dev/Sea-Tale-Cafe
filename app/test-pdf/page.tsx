@@ -19,25 +19,25 @@ export default function TestPDFPage() {
             dish_id: '1',
             quantity: 2,
             dish_name: 'Grilled Salmon',
-            dish_price: 24.99
+            dish_price: 850
           },
           {
             dish_id: '2',
             quantity: 1,
             dish_name: 'Caesar Salad',
-            dish_price: 12.50
+            dish_price: 420
           },
           {
             dish_id: '3',
             quantity: 3,
             dish_name: 'Fish & Chips',
-            dish_price: 18.75
+            dish_price: 650
           }
         ],
-        total_amount: 118.73,
-        bill_amount: 118.73,
-        tax_amount: 21.37,
-        final_amount: 140.10,
+        total_amount: 2770,
+        bill_amount: 2770,
+        tax_amount: 498.60,
+        final_amount: 3268.60,
         status: 'approved',
         created_at: new Date().toISOString()
       },
@@ -46,7 +46,7 @@ export default function TestPDFPage() {
           id: '1',
           name: 'Grilled Salmon',
           description: 'Fresh Atlantic salmon grilled to perfection',
-          price: 24.99,
+          price: 850,
           image_url: '',
           is_spicy: false,
           is_veg: false,
@@ -57,7 +57,7 @@ export default function TestPDFPage() {
           id: '2',
           name: 'Caesar Salad',
           description: 'Classic Caesar salad with croutons',
-          price: 12.50,
+          price: 420,
           image_url: '',
           is_spicy: false,
           is_veg: true,
@@ -68,7 +68,7 @@ export default function TestPDFPage() {
           id: '3',
           name: 'Fish & Chips',
           description: 'Traditional British fish and chips',
-          price: 18.75,
+          price: 650,
           image_url: '',
           is_spicy: false,
           is_veg: false,
@@ -85,18 +85,13 @@ export default function TestPDFPage() {
       taxes: [
         {
           id: 'tax-1',
-          name: 'CGST',
-          percentage: 9.00,
-          is_active: true
-        },
-        {
-          id: 'tax-2',
-          name: 'SGST',
-          percentage: 9.00,
+          name: 'GST',
+          percentage: 18.00,
           is_active: true
         }
       ],
-      restaurantPhone: '+1-555-SEA-TALE'
+      restaurantPhone: '+1-555-SEA-TALE',
+      gstin: '29ABCDE1234F1Z5'
     }
 
     try {
@@ -125,9 +120,9 @@ export default function TestPDFPage() {
                 <li>• Table: T5</li>
                 <li>• Customer: +1234567890</li>
                 <li>• Items: Grilled Salmon (x2), Caesar Salad (x1), Fish & Chips (x3)</li>
-                <li>• Subtotal: ₹118.73</li>
-                <li>• Tax (CGST + SGST): ₹21.37</li>
-                <li>• Total: ₹140.10</li>
+                <li>• Subtotal: ₹2,770.00</li>
+                <li>• Tax (CGST + SGST): ₹498.60</li>
+                <li>• Total: ₹3,268.60</li>
               </ul>
             </div>
 
