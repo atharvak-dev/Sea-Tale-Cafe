@@ -102,35 +102,70 @@ export default function AdminPage() {
   }
 
   const addDish = async (dish: Omit<Dish, 'id' | 'created_at'>) => {
-    const { error } = await supabase.from('dishes').insert(dish)
-    if (!error) fetchData()
+    const { data, error } = await supabase.from('dishes').insert(dish).select()
+    if (error) {
+      console.error('Error adding dish:', error)
+      alert(`❌ Failed to add dish: ${error.message}`)
+    } else {
+      alert(`✅ Dish "${dish.name}" added successfully!`)
+      fetchData()
+    }
   }
 
   const updateDishTags = async (dishId: string, tags: string[]) => {
     const { error } = await supabase.from('dishes').update({ tags }).eq('id', dishId)
-    if (!error) fetchData()
+    if (error) {
+      console.error('Error updating dish tags:', error)
+      alert(`❌ Failed to update tags: ${error.message}`)
+    } else {
+      fetchData()
+    }
   }
 
   const deleteDish = async (dishId: string, dishName: string) => {
     if (!confirm(`Delete "${dishName}"?`)) return
     const { error } = await supabase.from('dishes').delete().eq('id', dishId)
-    if (!error) fetchData()
+    if (error) {
+      console.error('Error deleting dish:', error)
+      alert(`❌ Failed to delete dish: ${error.message}`)
+    } else {
+      alert(`✅ Dish "${dishName}" deleted successfully!`)
+      fetchData()
+    }
   }
 
   const addCategory = async (category: Omit<Category, 'id' | 'created_at'>) => {
     const { error } = await supabase.from('categories').insert(category)
-    if (!error) fetchData()
+    if (error) {
+      console.error('Error adding category:', error)
+      alert(`❌ Failed to add category: ${error.message}`)
+    } else {
+      alert(`✅ Category "${category.name}" added successfully!`)
+      fetchData()
+    }
   }
 
   const deleteCategory = async (categoryId: string, categoryName: string) => {
     if (!confirm(`Delete "${categoryName}"?`)) return
     const { error } = await supabase.from('categories').delete().eq('id', categoryId)
-    if (!error) fetchData()
+    if (error) {
+      console.error('Error deleting category:', error)
+      alert(`❌ Failed to delete category: ${error.message}`)
+    } else {
+      alert(`✅ Category "${categoryName}" deleted successfully!`)
+      fetchData()
+    }
   }
 
   const updateCategory = async (categoryId: string, category: Omit<Category, 'id' | 'created_at'>) => {
     const { error } = await supabase.from('categories').update(category).eq('id', categoryId)
-    if (!error) fetchData()
+    if (error) {
+      console.error('Error updating category:', error)
+      alert(`❌ Failed to update category: ${error.message}`)
+    } else {
+      alert(`✅ Category "${category.name}" updated successfully!`)
+      fetchData()
+    }
   }
 
   const addEvent = async (event: Omit<Event, 'id' | 'created_at'>) => {
