@@ -4,24 +4,28 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 export default function AdminLogin() {
-    const [password, setPassword] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [error, setError] = useState('')
     const router = useRouter()
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
 
-        // Simple password check - you can change this password
-        const ADMIN_PASSWORD = 'seatale2024' // Change this to your desired password
+        // Authorized admin phone numbers
+        const AUTHORIZED_ADMINS = ['9518377949', '7499795424']
 
-        if (password === ADMIN_PASSWORD) {
+        // Clean the phone number (remove spaces, dashes, etc.)
+        const cleanedPhone = phoneNumber.replace(/\s|-|\(|\)/g, '')
+
+        if (AUTHORIZED_ADMINS.includes(cleanedPhone)) {
             // Store auth token in localStorage
             localStorage.setItem('admin_authenticated', 'true')
             localStorage.setItem('admin_auth_time', Date.now().toString())
+            localStorage.setItem('admin_phone', cleanedPhone)
             router.push('/admin')
         } else {
-            setError('Invalid password. Please try again.')
-            setPassword('')
+            setError('Unauthorized phone number. Access denied.')
+            setPhoneNumber('')
         }
     }
 
@@ -48,19 +52,19 @@ export default function AdminLogin() {
 
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-atlassian-neutral-700 mb-2">
-                            Admin Password
+                        <label htmlFor="phone" className="block text-sm font-medium text-atlassian-neutral-700 mb-2">
+                            📱 Admin Phone Number
                         </label>
                         <input
-                            id="password"
-                            type="password"
-                            value={password}
+                            id="phone"
+                            type="tel"
+                            value={phoneNumber}
                             onChange={(e) => {
-                                setPassword(e.target.value)
+                                setPhoneNumber(e.target.value)
                                 setError('')
                             }}
-                            placeholder="Enter admin password"
-                            className="w-full px-4 py-3 bg-atlassian-neutral-50 border border-atlassian-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-atlassian-blue-400 focus:border-atlassian-blue-500 transition-colors"
+                            placeholder="Enter your phone number"
+                            className="w-full px-4 py-3 bg-atlassian-neutral-50 border border-atlassian-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-atlassian-blue-400 focus:border-atlassian-blue-500 transition-colors text-lg tracking-wide"
                             autoFocus
                         />
                         {error && (
@@ -69,13 +73,16 @@ export default function AdminLogin() {
                                 {error}
                             </p>
                         )}
+                        <p className="mt-2 text-xs text-atlassian-neutral-500">
+                            💡 Enter your registered admin phone number
+                        </p>
                     </div>
 
                     <button
                         type="submit"
                         className="w-full bg-atlassian-blue-700 text-white py-3 rounded-lg font-bold shadow-lg hover:bg-atlassian-blue-800 transition-all hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-atlassian-blue-400"
                     >
-                        Login to Admin Panel
+                        🔐 Verify & Login
                     </button>
                 </form>
 
