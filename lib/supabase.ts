@@ -12,6 +12,7 @@ export type Dish = {
   price: number
   image_url: string
   is_spicy: boolean
+  is_veg: boolean
   tags: string[]
   category_id?: string
   created_at: string
@@ -21,7 +22,6 @@ export type Category = {
   id: string
   name: string
   description: string
-  is_veg: boolean
   cuisine_type: string
   created_at: string
 }

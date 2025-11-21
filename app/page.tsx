@@ -19,7 +19,7 @@ export default function Home() {
       supabase.from('dishes').select('*').contains('tags', ['Best Seller']),
       supabase.from('events').select('*').eq('is_active', true).gte('event_date', new Date().toISOString().split('T')[0])
     ])
-    
+
     setCategories(categoriesRes.data || [])
     setBestSellerDishes(dishesRes.data || [])
     setEvents(eventsRes.data || [])
@@ -31,30 +31,30 @@ export default function Home() {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-ocean-500/10 rounded-full blur-3xl animate-bounce-gentle"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-coral-500/10 rounded-full blur-3xl animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-coral-500/10 rounded-full blur-3xl animate-bounce-gentle" style={{ animationDelay: '1s' }}></div>
         </div>
-        
+
         <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
           <div className="maritime-card p-10 max-w-lg mx-4 animate-fade-in">
             <div className="text-center">
               <div className="mb-6">
-                <Image 
-                  src="/logo.jpg" 
-                  alt="Sea Tale Restaurant" 
-                  width={120} 
-                  height={120} 
+                <Image
+                  src="/logo.jpg"
+                  alt="Sea Tale Restaurant"
+                  width={120}
+                  height={120}
                   className="mx-auto rounded-full shadow-2xl border-4 border-white/50"
                 />
               </div>
-              
+
               <h1 className="text-4xl font-display font-bold bg-gradient-to-r from-ocean-700 to-coral-600 bg-clip-text text-transparent mb-3">
                 Sea Tale
               </h1>
               <p className="text-gray-600 mb-8 text-lg">Maritime Dining Experience</p>
-              
+
               <div className="space-y-4">
-                <Link 
-                  href="/customer" 
+                <Link
+                  href="/customer"
                   className="btn-primary block w-full text-center group"
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -64,9 +64,9 @@ export default function Home() {
                     </svg>
                   </span>
                 </Link>
-                
-                <Link 
-                  href="/receptionist/login" 
+
+                <Link
+                  href="/receptionist/login"
                   className="btn-secondary block w-full text-center group"
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -174,11 +174,11 @@ export default function Home() {
                       <p className="text-gray-600 mb-3">{event.description}</p>
                       <div className="flex items-center gap-2 text-sm text-ocean-600">
                         <span>📅</span>
-                        <span>{new Date(event.event_date).toLocaleDateString('en-US', { 
-                          weekday: 'long', 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
+                        <span>{new Date(event.event_date).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
                         })}</span>
                       </div>
                     </div>
@@ -195,8 +195,8 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-display font-bold mb-8">About Sea Tale</h2>
           <p className="text-lg text-ocean-100 mb-8 leading-relaxed">
-            Welcome to Sea Tale, where maritime tradition meets culinary excellence. Our restaurant offers a unique dining experience 
-            with fresh seafood, authentic flavors, and a warm nautical atmosphere. From traditional dishes to modern fusion cuisine, 
+            Welcome to Sea Tale, where maritime tradition meets culinary excellence. Our restaurant offers a unique dining experience
+            with fresh seafood, authentic flavors, and a warm nautical atmosphere. From traditional dishes to modern fusion cuisine,
             every meal tells a story of the sea.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">

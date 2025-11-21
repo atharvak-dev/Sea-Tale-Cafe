@@ -13,26 +13,26 @@ interface DishesTabProps {
   onUpdateCategory: (categoryId: string, category: Omit<Category, 'id' | 'created_at'>) => void
 }
 
-export default function DishesTab({ 
-  dishes, 
-  categories, 
-  onAddDish, 
-  onUpdateDishTags, 
+export default function DishesTab({
+  dishes,
+  categories,
+  onAddDish,
+  onUpdateDishTags,
   onDeleteDish,
   onAddCategory,
   onDeleteCategory,
   onUpdateCategory
 }: DishesTabProps) {
-  const [newDish, setNewDish] = useState<Omit<Dish, 'id' | 'created_at'>>({ 
-    name: '', description: '', price: 0, is_spicy: false, tags: [], image_url: '', category_id: '' 
+  const [newDish, setNewDish] = useState<Omit<Dish, 'id' | 'created_at'>>({
+    name: '', description: '', price: 0, is_spicy: false, is_veg: false, tags: [], image_url: '', category_id: ''
   })
   const [customTag, setCustomTag] = useState('')
   const [imagePreview, setImagePreview] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [showAddCategory, setShowAddCategory] = useState(false)
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
-  const [newCategory, setNewCategory] = useState<Omit<Category, 'id' | 'created_at'>>({ 
-    name: '', description: '', is_veg: false, cuisine_type: 'general' 
+  const [newCategory, setNewCategory] = useState<Omit<Category, 'id' | 'created_at'>>({
+    name: '', description: '', is_veg: false, cuisine_type: 'general'
   })
 
   const quickTags = ['Best Seller', 'Chef Recommended', 'New', 'Popular', 'Signature']
@@ -45,7 +45,7 @@ export default function DishesTab({
       reader.onload = () => {
         const base64 = reader.result as string
         setImagePreview(base64)
-        setNewDish({...newDish, image_url: base64})
+        setNewDish({ ...newDish, image_url: base64 })
       }
       reader.readAsDataURL(file)
     }
@@ -53,32 +53,32 @@ export default function DishesTab({
 
   const addQuickTag = (tag: string) => {
     if (!newDish.tags.includes(tag)) {
-      setNewDish({...newDish, tags: [...newDish.tags, tag]})
+      setNewDish({ ...newDish, tags: [...newDish.tags, tag] })
     }
   }
 
   const addCustomTag = () => {
     if (customTag.trim() && !newDish.tags.includes(customTag.trim())) {
-      setNewDish({...newDish, tags: [...newDish.tags, customTag.trim()]})
+      setNewDish({ ...newDish, tags: [...newDish.tags, customTag.trim()] })
       setCustomTag('')
     }
   }
 
   const removeTag = (tagToRemove: string) => {
-    setNewDish({...newDish, tags: newDish.tags.filter(tag => tag !== tagToRemove)})
+    setNewDish({ ...newDish, tags: newDish.tags.filter(tag => tag !== tagToRemove) })
   }
 
   const handleAddDish = () => {
     if (!newDish.name || !newDish.price || !newDish.category_id) return
     onAddDish(newDish)
-    setNewDish({ name: '', description: '', price: 0, is_spicy: false, tags: [], image_url: '', category_id: '' })
+    setNewDish({ name: '', description: '', price: 0, is_spicy: false, is_veg: false, tags: [], image_url: '', category_id: '' })
     setImagePreview('')
   }
 
   const handleAddCategory = () => {
     if (!newCategory.name.trim()) return
     onAddCategory(newCategory)
-    setNewCategory({ name: '', description: '', is_veg: false, cuisine_type: 'general' })
+    setNewCategory({ name: '', description: '', cuisine_type: 'general' })
     setShowAddCategory(false)
   }
 
@@ -87,7 +87,6 @@ export default function DishesTab({
     setNewCategory({
       name: category.name,
       description: category.description,
-      is_veg: category.is_veg,
       cuisine_type: category.cuisine_type
     })
     setShowAddCategory(true)
@@ -96,12 +95,12 @@ export default function DishesTab({
   const handleUpdateCategory = () => {
     if (!newCategory.name.trim() || !editingCategory) return
     onUpdateCategory(editingCategory.id, newCategory)
-    setNewCategory({ name: '', description: '', is_veg: false, cuisine_type: 'general' })
+    setNewCategory({ name: '', description: '', cuisine_type: 'general' })
     setEditingCategory(null)
     setShowAddCategory(false)
   }
 
-  const filteredDishes = selectedCategory 
+  const filteredDishes = selectedCategory
     ? dishes.filter(dish => dish.category_id === selectedCategory)
     : dishes
 
@@ -110,20 +109,20 @@ export default function DishesTab({
       <div className="lg:col-span-1">
         <div className="maritime-card p-6 sticky top-6">
           <h2 className="text-xl font-display font-bold text-gray-800 mb-6">Add New Dish</h2>
-          
+
           <div className="space-y-4">
             {/* Category Selection */}
             <div className="space-y-2">
               <div className="flex gap-2">
                 <select
                   value={newDish.category_id}
-                  onChange={(e) => setNewDish({...newDish, category_id: e.target.value})}
+                  onChange={(e) => setNewDish({ ...newDish, category_id: e.target.value })}
                   className="input-modern flex-1"
                 >
                   <option value="">Select Category</option>
                   {categories.map(cat => (
                     <option key={cat.id} value={cat.id}>
-                      {cat.name} ({cat.cuisine_type}) {cat.is_veg ? '🥬' : '🍖'}
+                      {cat.name} ({cat.cuisine_type})
                     </option>
                   ))}
                 </select>
@@ -149,7 +148,7 @@ export default function DishesTab({
                     <button
                       onClick={() => {
                         setImagePreview('')
-                        setNewDish({...newDish, image_url: ''})
+                        setNewDish({ ...newDish, image_url: '' })
                       }}
                       className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
                     >
@@ -173,34 +172,46 @@ export default function DishesTab({
             <input
               placeholder="Dish name"
               value={newDish.name}
-              onChange={(e) => setNewDish({...newDish, name: e.target.value})}
+              onChange={(e) => setNewDish({ ...newDish, name: e.target.value })}
               className="input-modern"
             />
-            
+
             <input
               type="number"
               placeholder="Price"
               value={newDish.price || ''}
-              onChange={(e) => setNewDish({...newDish, price: Number(e.target.value)})}
+              onChange={(e) => setNewDish({ ...newDish, price: Number(e.target.value) })}
               className="input-modern"
             />
-            
+
             <textarea
               placeholder="Description"
               value={newDish.description}
-              onChange={(e) => setNewDish({...newDish, description: e.target.value})}
+              onChange={(e) => setNewDish({ ...newDish, description: e.target.value })}
               className="input-modern h-20 resize-none"
             />
-            
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={newDish.is_spicy}
-                onChange={(e) => setNewDish({...newDish, is_spicy: e.target.checked})}
-                className="rounded"
-              />
-              <span className="text-sm font-medium">🌶️ Spicy</span>
-            </label>
+
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={newDish.is_spicy}
+                  onChange={(e) => setNewDish({ ...newDish, is_spicy: e.target.checked })}
+                  className="rounded"
+                />
+                <span className="text-sm font-medium">🌶️ Spicy</span>
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={newDish.is_veg}
+                  onChange={(e) => setNewDish({ ...newDish, is_veg: e.target.checked })}
+                  className="rounded"
+                />
+                <span className="text-sm font-medium">🥬 Vegetarian</span>
+              </label>
+            </div>
 
             {/* Quick Tags */}
             <div>
@@ -211,11 +222,10 @@ export default function DishesTab({
                     key={tag}
                     onClick={() => addQuickTag(tag)}
                     disabled={newDish.tags.includes(tag)}
-                    className={`px-3 py-1 rounded-full text-xs transition-colors ${
-                      newDish.tags.includes(tag)
+                    className={`px-3 py-1 rounded-full text-xs transition-colors ${newDish.tags.includes(tag)
                         ? 'bg-green-100 text-green-700 cursor-not-allowed'
                         : 'bg-gray-100 text-gray-700 hover:bg-ocean-100 hover:text-ocean-700'
-                    }`}
+                      }`}
                   >
                     + {tag}
                   </button>
@@ -248,8 +258,8 @@ export default function DishesTab({
               </div>
             </div>
 
-            <button 
-              onClick={handleAddDish} 
+            <button
+              onClick={handleAddDish}
               disabled={!newDish.name || !newDish.price || !newDish.category_id}
               className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -269,18 +279,18 @@ export default function DishesTab({
                 <input
                   placeholder="Category name"
                   value={newCategory.name}
-                  onChange={(e) => setNewCategory({...newCategory, name: e.target.value})}
+                  onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
                   className="input-modern"
                 />
                 <textarea
                   placeholder="Description"
                   value={newCategory.description}
-                  onChange={(e) => setNewCategory({...newCategory, description: e.target.value})}
+                  onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
                   className="input-modern h-20 resize-none"
                 />
                 <select
                   value={newCategory.cuisine_type}
-                  onChange={(e) => setNewCategory({...newCategory, cuisine_type: e.target.value})}
+                  onChange={(e) => setNewCategory({ ...newCategory, cuisine_type: e.target.value })}
                   className="input-modern"
                 >
                   {cuisineTypes.map(type => (
@@ -293,7 +303,7 @@ export default function DishesTab({
                   <input
                     type="checkbox"
                     checked={newCategory.is_veg}
-                    onChange={(e) => setNewCategory({...newCategory, is_veg: e.target.checked})}
+                    onChange={(e) => setNewCategory({ ...newCategory, is_veg: e.target.checked })}
                     className="rounded"
                   />
                   <span className="text-sm font-medium">🥬 Vegetarian Category</span>
@@ -303,7 +313,7 @@ export default function DishesTab({
                     onClick={() => {
                       setShowAddCategory(false)
                       setEditingCategory(null)
-                      setNewCategory({ name: '', description: '', is_veg: false, cuisine_type: 'general' })
+                      setNewCategory({ name: '', description: '', cuisine_type: 'general' })
                     }}
                     className="btn-secondary flex-1"
                   >
@@ -339,11 +349,6 @@ export default function DishesTab({
                   {!['chinese', 'desi', 'italian', 'drinks', 'desserts'].includes(category.cuisine_type) && '🍽️'}
                 </span>
                 <span className="text-sm font-medium">{category.name}</span>
-                {category.is_veg ? (
-                  <span className="text-xs bg-green-100 text-green-700 px-1 rounded">🥬</span>
-                ) : (
-                  <span className="text-xs bg-red-100 text-red-700 px-1 rounded">🍖</span>
-                )}
                 <button
                   onClick={() => handleEditCategory(category)}
                   className="text-blue-500 hover:text-blue-700 text-xs ml-1"
@@ -374,7 +379,7 @@ export default function DishesTab({
             ))}
           </select>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredDishes.map(dish => {
             const category = categories.find(c => c.id === dish.category_id)
@@ -393,26 +398,23 @@ export default function DishesTab({
                       🌶️ Spicy
                     </span>
                   )}
-                  {category && (
-                    <span className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs ${
-                      category.is_veg ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                  <span className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs ${dish.is_veg ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
                     }`}>
-                      {category.is_veg ? '🥬 Veg' : '🍖 Non-Veg'}
-                    </span>
-                  )}
+                    {dish.is_veg ? '🥬 Veg' : '🍖 Non-Veg'}
+                  </span>
                 </div>
-                
+
                 <div className="p-4">
                   <h3 className="font-display font-bold text-lg text-gray-800 mb-2">{dish.name}</h3>
                   <p className="text-gray-600 text-sm mb-3 line-clamp-2">{dish.description}</p>
                   <p className="text-2xl font-bold text-ocean-700 mb-3">${dish.price}</p>
-                  
+
                   {category && (
                     <span className="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs mb-2">
                       {category.name}
                     </span>
                   )}
-                  
+
                   <div className="flex flex-wrap gap-2 mb-3">
                     {dish.tags.map(tag => (
                       <span key={tag} className="bg-coral-100 text-coral-700 px-2 py-1 rounded-full text-xs">
@@ -420,7 +422,7 @@ export default function DishesTab({
                       </span>
                     ))}
                   </div>
-                  
+
                   <div className="flex justify-between items-center">
                     <div className="flex gap-2">
                       {!dish.tags.includes('Best Seller') && (
