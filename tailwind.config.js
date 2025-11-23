@@ -10,11 +10,16 @@ module.exports = {
       colors: {
         ocean: {
           50: '#f0f9ff',
+          100: '#e0f2fe',
           200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
           500: '#0ea5e9',
           600: '#0284c7',
           700: '#0369a1',
+          800: '#075985',
           900: '#0c4a6e',
+          950: '#082f49',
         },
         coral: {
           100: '#fce7f3',
@@ -49,9 +54,13 @@ module.exports = {
           yellow: '#FFAB00',
           red: '#DE350B',
         },
-        sea: {
-          gold: '#D4AF37',
-          cream: '#FDFBF7',
+        seatale: {
+          primary: '#0A2342', // Deep Blue
+          secondary: '#C5A059', // Muted Gold
+          accent: '#4E6E5D', // Olive/Sea Green
+          cream: '#F4EBD9', // Sandy Cream
+          light: '#FDFBF7', // Off-white
+          dark: '#1A1A1A',
         }
       },
       fontFamily: {

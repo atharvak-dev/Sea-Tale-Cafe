@@ -1,17 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
 
 @layer base {
   body {
-    @apply bg-gradient-to-b from-ocean-50 to-blue-50 min-h-screen;
+    @apply bg-seatale-cream min-h-screen text-seatale-primary;
+    background-image: radial-gradient(circle at 10% 20%, rgba(78, 110, 93, 0.05) 0%, transparent 20%),
+      radial-gradient(circle at 90% 80%, rgba(10, 35, 66, 0.05) 0%, transparent 20%);
   }
 }
 
 @layer components {
   .maritime-card {
-    @apply bg-white rounded-xl shadow-sm border border-atlassian-neutral-300 overflow-hidden transition-shadow hover:shadow-md;
+    @apply bg-seatale-light rounded-2xl shadow-md border-2 border-seatale-secondary/30 overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-seatale-secondary;
+  }
+
+  .rope-border {
+    border: 4px dashed #C5A059;
+    border-radius: 1rem;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(197, 160, 89, 0.2);
   }
 
   .wave-pattern {
